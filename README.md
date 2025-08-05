@@ -21,7 +21,7 @@ If you like this idea, and plan to use it in your project, send me a message to 
 - [🔄 Continuous Integration](#continuous-integration)
 - [🏆 Best Practices](#best-practices)
 
-## 🏗️ Modular Architecture with Tuist
+## Modular Architecture with Tuist
 
 This project showcases a **modular architecture** where each feature is isolated into its own module, promoting:
 
@@ -39,7 +39,7 @@ This project showcases a **modular architecture** where each feature is isolated
 - **Module Configuration**: Standardized module structure across the project
 - **Build Optimization**: Smart caching and dependency resolution
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 SmartShop/
@@ -52,7 +52,7 @@ SmartShop/
     └── ProjectDescriptionHelpers/
 ```
 
-## 🧩 uFeature Modules
+## uFeature Modules
 
 Each **uFeature** follows a consistent structure:
 
@@ -100,7 +100,7 @@ public final class HomeViewController: UIViewController, HomeViewControllerProto
 }
 ```
 
-## 🔧 Module Configuration with Project.swift
+## Module Configuration with Project.swift
 
 Each uFeature has its own `Project.swift` file that:
 
@@ -183,7 +183,7 @@ Network Interface
 3. **App module** imports **Implementation modules** for concrete usage
 4. **Cross-module communication** happens through **Interface protocols**
 
-## 🚀 Benefits of This Architecture
+## Benefits of This Architecture
 
 ### For Development:
 - **Independent Development**: Teams can work on different modules simultaneously
@@ -200,9 +200,9 @@ Network Interface
 - **Incremental Builds**: Only changed modules need recompilation
 - **Caching**: Tuist can cache unchanged modules
 
-## 🛠️ Getting Started
+## Getting Started
 
-### ⚡ Quick Start (One Command)
+### Quick Start (One Command)
 
 ```bash
 make dev
@@ -231,7 +231,7 @@ This single command will:
    open SmartShop.xcworkspace
    ```
 
-## 📈 Adding New Modules
+## Adding New Modules
 
 To add a new uFeature module:
 
@@ -260,7 +260,7 @@ To add a new uFeature module:
 
 4. **Import in dependent modules** as needed
 
-## 🧪 Testing Configuration
+## Testing Configuration
 
 Each module can have its own test suite to ensure code quality and module isolation.
 
@@ -364,7 +364,7 @@ final class HomeModuleTests: XCTestCase {
 - Use `@testable import` to access internal implementation details
 - Keep test dependencies minimal to maintain module isolation
 
-## ⚡ Makefile Automation
+## Makefile Automation
 
 The project includes a comprehensive Makefile that automates common development tasks:
 
@@ -397,11 +397,11 @@ make clean-all       # Remove all generated files and cache
 - **Safety**: Handles dependencies and cleanup automatically
 - **Speed**: Quick shortcuts for common operations
 
-## 🔄 Continuous Integration
+## Continuous Integration
 
 This project is integrated with GitHub Actions. On every push or pull request to the **main** branch, the workflow `.github/workflows/makefile.yml` runs the Makefile targets (`make install`, `make test`) on a macOS runner to ensure code is generated, built, and tested automatically.
 
-## 🏆 Best Practices
+## Best Practices
 
 ### Module Design
 - **Keep interfaces minimal**: Only expose what other modules need
