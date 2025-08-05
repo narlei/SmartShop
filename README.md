@@ -1,6 +1,7 @@
 # SmartShop - Modular iOS Architecture with Tuist
 
 A modular iOS application demonstrating clean architecture principles using **Tuist** for project generation and dependency management.
+If you like this idea, and plan to use it in your project, send me a message to talk about your experience: https://www.linkedin.com/in/narlei/
 
 ## Table of Contents
 
