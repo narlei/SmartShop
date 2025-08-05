@@ -13,13 +13,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Cache Tuist (including SelectiveTests)
+      - name: Cache Tuist state and SelectiveTests
         uses: actions/cache@v3
         with:
           path: |
             ~/.cache/tuist
             ~/.cache/tuist/SelectiveTests
+            ~/Library/Caches/tuist
+            ~/Library/Caches/tuist/SelectiveTests
           key: ${{ runner.os }}-tuist-${{ hashFiles('**/Project.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-tuist-
 
       - name: Cache DerivedData
         uses: actions/cache@v3
