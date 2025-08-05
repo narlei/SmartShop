@@ -176,6 +176,20 @@ Network Interface
 
 ## 🛠️ Getting Started
 
+### ⚡ Quick Start (One Command)
+
+```bash
+make dev
+```
+
+This single command will:
+1. Install Tuist (if not already installed)
+2. Clean any previous cache
+3. Generate all modules and the main workspace
+4. Open the project in Xcode
+
+### Manual Steps (If Needed)
+
 1. **Install Tuist**:
    ```bash
    curl -Ls https://install.tuist.io | bash
@@ -183,7 +197,7 @@ Network Interface
 
 2. **Generate the project**:
    ```bash
-   tuist generate
+   tuist dev
    ```
 
 3. **Open the workspace**:
@@ -219,6 +233,39 @@ To add a new uFeature module:
 3. **Add to Feature enum** in `ProjectDescriptionHelpers`
 
 4. **Import in dependent modules** as needed
+
+## ⚡ Makefile Automation
+
+The project includes a comprehensive Makefile that automates common development tasks:
+
+### Development Workflow
+```bash
+# Complete development setup (recommended)
+make dev              # Install Tuist + Generate + Open in Xcode
+
+# Individual steps
+make install          # Install Tuist if not present
+make generate         # Generate all projects and workspace
+make open            # Open workspace in Xcode
+```
+
+### Build & Test
+```bash
+make build           # Build the project
+make test            # Run all tests
+```
+
+### Cleanup
+```bash
+make clean           # Clean Tuist cache only
+make clean-all       # Remove all generated files and cache
+```
+
+### Why Use Makefile?
+- **Consistency**: Same commands work for all team members
+- **Automation**: No need to remember complex Tuist commands
+- **Safety**: Handles dependencies and cleanup automatically
+- **Speed**: Quick shortcuts for common operations
 
 ## 🏆 Best Practices
 

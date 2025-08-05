@@ -11,7 +11,8 @@ let project = Project(
             ],
             dependencies: [
                 .feature(implementation: .Home),
-                .feature(interface: .Home)
+                .feature(interface: .Home),
+                .feature(interface: .Networking)
             ]
         )
     ]

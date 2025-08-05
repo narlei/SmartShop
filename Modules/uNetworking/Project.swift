@@ -2,17 +2,17 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project(
-    name: Feature.Network.rawValue,
+    name: Feature.Networking.rawValue,
     targets: [
         .feature(
-            interface: .Network,
+            interface: .Networking,
             dependencies: [
             ]
         ),
         .feature(
-            implementation: .Network,
+            implementation: .Networking,
             dependencies: [
-                .feature(interface: .Network),
+                .feature(interface: .Networking),
             ]
         )
     ]

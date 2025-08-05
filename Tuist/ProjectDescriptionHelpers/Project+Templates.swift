@@ -1,4 +1,5 @@
 import ProjectDescription
+import Foundation
 
 private let rootPackagesName = "com.smartshop."
 
@@ -49,7 +50,7 @@ public extension Target {
     ) -> Target {
         makeFramework(
             name: featureName,
-            sources: ["Implementation/**"],
+            sources: ["Implementation/Sources/**"],
             dependencies: dependencies,
             resources: resources
         )
@@ -62,10 +63,34 @@ public extension Target {
     ) -> Target {
         makeFramework(
             name: featureName + "Interface",
-            sources: ["Interface/**"],
+            sources: ["Interface/Sources/**"],
             dependencies: dependencies,
             resources: resources
         )
+    }
+
+    private static func test(
+        name: String,
+        basePath basePath: String,
+        dependencies: [TargetDependency] = [],
+        resources: ResourceFileElements? = []
+    ) -> Target {
+        let testDir = "\(basePath)/Tests/Sources"
+        var allDependencies: [TargetDependency] = [.target(name: name)]
+        allDependencies.append(contentsOf: dependencies)
+        
+        let testTarget = Target.target(
+            name: "\(name)Tests",
+            destinations: .iOS,
+            product: .unitTests,
+            bundleId: makeBundleID(with: "\(name)Tests"),
+            deploymentTargets: .iOS("16.0"),
+            infoPlist: .default,
+            sources: ["\(basePath)/Tests/Sources/**"],
+            dependencies: allDependencies
+        )
+
+        return testTarget
     }
 
     static func feature(
@@ -87,6 +112,32 @@ public extension Target {
     ) -> Target {
         .feature(
             interface: featureName.rawValue,
+            dependencies: dependencies,
+            resources: resources
+        )
+    }
+
+    static func test(
+        interface featureName: Feature,
+        dependencies: [TargetDependency] = [],
+        resources: ResourceFileElements? = []
+    ) -> Target {
+        .test(
+            name: featureName.rawValue,
+            basePath: "Interface",
+            dependencies: dependencies,
+            resources: resources
+        )
+    }
+
+    static func test(
+        implementation featureName: Feature,
+        dependencies: [TargetDependency] = [],
+        resources: ResourceFileElements? = []
+    ) -> Target {
+        .test(
+            name: featureName.rawValue,
+            basePath: "Implementation",
             dependencies: dependencies,
             resources: resources
         )

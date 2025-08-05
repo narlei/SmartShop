@@ -22,7 +22,7 @@ clean: ## Clean Tuist cache
 	@echo "🧹 Cleaning Tuist cache..."
 	@tuist clean
 
-generate: install clean ## Generate Xcode project
+generate: install ## Generate Xcode project
 	@echo "📦 Generating modules..."
 	@tuist generate --no-open
 	@echo "✅ Project generated successfully!"
@@ -39,8 +39,8 @@ build: generate ## Generate and build project
 	@xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme $(PROJECT_NAME) -configuration Debug build
 
 test: generate ## Generate and run tests
-	@echo "🧪 Running tests..."
-	@xcodebuild -workspace $(PROJECT_NAME).xcworkspace -scheme $(PROJECT_NAME) -configuration Debug test
+	@echo "🧪 Running tests with Tuist..."
+	@tuist test --device "iPhone 16 Pro" --os 18.5
 
 # Cleanup commands
 clean-all: clean ## Clean everything (cache + generated files)

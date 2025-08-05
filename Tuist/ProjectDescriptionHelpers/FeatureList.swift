@@ -2,6 +2,6 @@ import ProjectDescription
 
 public enum Feature: String {
     case Home
-    case Network
+    case Networking
     case App
 }
