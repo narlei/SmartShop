@@ -2,22 +2,23 @@
 
 A modular iOS application demonstrating clean architecture principles using **Tuist** for project generation and dependency management.
 
-## Summary
+## Table of Contents
 
-- [🏗️ Modular Architecture with Tuist](#-modular-architecture-with-tuist)
-- [📁 Project Structure](#-project-structure)
-- [🧩 uFeature Modules](#-ufeature-modules)
+- [🏗️ Modular Architecture with Tuist](#modular-architecture-with-tuist)
+- [📁 Project Structure](#project-structure)
+- [🧩 uFeature Modules](#ufeature-modules)
   - [Module Structure](#module-structure)
   - [Interface vs Implementation](#interface-vs-implementation)
-- [🔧 Module Configuration with Project.swift](#-module-configuration-with-projectswift)
-- [🚀 Benefits of This Architecture](#-benefits-of-this-architecture)
-- [🛠️ Getting Started](#️-getting-started)
-  - [⚡ Quick Start (One Command)](#-quick-start-one-command)
+- [🔧 Module Configuration with Project.swift](#module-configuration-with-projectswift)
+- [🚀 Benefits of This Architecture](#benefits-of-this-architecture)
+- [🛠️ Getting Started](#getting-started)
+  - [⚡ Quick Start (One Command)](#quick-start-one-command)
   - [Manual Steps (If Needed)](#manual-steps-if-needed)
-- [📈 Adding New Modules](#📈-adding-new-modules)
-- [🧪 Testing Configuration](#🧪-testing-configuration)
-- [⚡ Makefile Automation](#⚡-makefile-automation)
-- [🏆 Best Practices](#🏆-best-practices)
+- [📈 Adding New Modules](#adding-new-modules)
+- [🧪 Testing Configuration](#testing-configuration)
+- [⚡ Makefile Automation](#makefile-automation)
+- [🔄 Continuous Integration](#continuous-integration)
+- [🏆 Best Practices](#best-practices)
 
 ## 🏗️ Modular Architecture with Tuist
 
@@ -394,6 +395,10 @@ make clean-all       # Remove all generated files and cache
 - **Automation**: No need to remember complex Tuist commands
 - **Safety**: Handles dependencies and cleanup automatically
 - **Speed**: Quick shortcuts for common operations
+
+## 🔄 Continuous Integration
+
+This project is integrated with GitHub Actions. On every push or pull request to the **main** branch, the workflow `.github/workflows/makefile.yml` runs the Makefile targets (`make install`, `make test`) on a macOS runner to ensure code is generated, built, and tested automatically.
 
 ## 🏆 Best Practices
 
