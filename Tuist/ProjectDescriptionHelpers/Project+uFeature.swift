@@ -20,8 +20,4 @@ public extension ProjectDescription.TargetDependency {
     static func feature(implementation moduleName: Feature) -> ProjectDescription.TargetDependency {
         .feature(implementation: moduleName.rawValue)
     }
-
-    static func external(_ module: External) -> ProjectDescription.TargetDependency {
-        .external(name: module.rawValue)
-    }
 }
