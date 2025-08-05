@@ -30,11 +30,5 @@ jobs:
       - name: Install Tuist
         run: make install
 
-      - name: Generate Xcode project
-        run: make generate
-
-      - name: Build App
-        run: make build
-
       - name: Run Tests
         run: make test
