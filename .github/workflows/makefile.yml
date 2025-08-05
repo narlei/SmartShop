@@ -29,7 +29,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/Library/Developer/Xcode/DerivedData
-          key: ${{ runner.os }}-deriveddata-${{ hashFiles('**/Project.swift') }}
+          key: ${{ runner.os }}-deriveddata
 
       - name: Install Tuist
         run: make install
