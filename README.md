@@ -2,6 +2,23 @@
 
 A modular iOS application demonstrating clean architecture principles using **Tuist** for project generation and dependency management.
 
+## Summary
+
+- [🏗️ Modular Architecture with Tuist](#-modular-architecture-with-tuist)
+- [📁 Project Structure](#-project-structure)
+- [🧩 uFeature Modules](#-ufeature-modules)
+  - [Module Structure](#module-structure)
+  - [Interface vs Implementation](#interface-vs-implementation)
+- [🔧 Module Configuration with Project.swift](#-module-configuration-with-projectswift)
+- [🚀 Benefits of This Architecture](#-benefits-of-this-architecture)
+- [🛠️ Getting Started](#️-getting-started)
+  - [⚡ Quick Start (One Command)](#-quick-start-one-command)
+  - [Manual Steps (If Needed)](#manual-steps-if-needed)
+- [📈 Adding New Modules](#📈-adding-new-modules)
+- [🧪 Testing Configuration](#🧪-testing-configuration)
+- [⚡ Makefile Automation](#⚡-makefile-automation)
+- [🏆 Best Practices](#🏆-best-practices)
+
 ## 🏗️ Modular Architecture with Tuist
 
 This project showcases a **modular architecture** where each feature is isolated into its own module, promoting:
@@ -111,6 +128,13 @@ let project = Project(
             dependencies: [
                 .feature(interface: .Network),    // Import other interfaces
                 .feature(interface: .Home),       // Import own interface
+            ]
+        ),
+        // Test target (unit tests)
+        .test(
+            implementation: .Home,
+            dependencies: [
+                .feature(interface: .Home)        // Test can access interfaces
             ]
         )
     ]
@@ -234,6 +258,110 @@ To add a new uFeature module:
 
 4. **Import in dependent modules** as needed
 
+## 🧪 Testing Configuration
+
+Each module can have its own test suite to ensure code quality and module isolation.
+
+### Adding Tests to a Module
+
+To add tests to a uFeature module, include a test target in the `Project.swift`:
+
+```swift
+let project = Project(
+    name: Feature.Home.rawValue,
+    targets: [
+        // Interface target
+        .feature(
+            interface: .Home,
+            dependencies: []
+        ),
+        // Implementation target
+        .feature(
+            implementation: .Home,
+            dependencies: [
+                .feature(interface: .Home)
+            ]
+        ),
+        // Test target
+        .test(
+            implementation: .Home,
+            dependencies: [
+                .feature(interface: .Home)
+            ]
+        )
+    ]
+)
+```
+
+### Test Structure
+
+Tests are organized following the module structure:
+
+```
+uFeatureName/
+├── Interface/
+├── Implementation/
+│   ├── Sources/              # Implementation code
+│   └── Tests/
+│       └── Sources/          # Test files
+│           └── FeatureTests.swift
+└── Project.swift
+```
+
+### Running Tests
+
+```bash
+# Run all tests
+make test
+
+# Build and test manually
+xcodebuild -workspace SmartShop.xcworkspace -scheme Home -destination 'platform=iOS Simulator,name=iPhone 15' test
+```
+
+### Test Types Supported
+
+- **Unit Tests**: Test individual components and business logic
+- **Integration Tests**: Test module interactions
+- **Performance Tests**: Measure performance of critical paths
+
+### Example Test Implementation
+
+```swift
+import XCTest
+@testable import Home
+@testable import HomeInterface
+
+final class HomeModuleTests: XCTestCase {
+    
+    func testTaskItemInitialization() {
+        // Given
+        let title = "Test Task"
+        
+        // When
+        let task = TaskItem(title: title)
+        
+        // Then
+        XCTAssertEqual(task.title, title)
+        XCTAssertFalse(task.isCompleted)
+    }
+    
+    func testHomeFactoryCreatesViewController() {
+        // When
+        let viewController = HomeFactory.makeHomeViewController()
+        
+        // Then
+        XCTAssertNotNil(viewController)
+        XCTAssertTrue(viewController is HomeViewControllerProtocol)
+    }
+}
+```
+
+### Test Dependencies
+
+- Tests can depend on both **Interface** and **Implementation** targets
+- Use `@testable import` to access internal implementation details
+- Keep test dependencies minimal to maintain module isolation
+
 ## ⚡ Makefile Automation
 
 The project includes a comprehensive Makefile that automates common development tasks:
@@ -269,11 +397,25 @@ make clean-all       # Remove all generated files and cache
 
 ## 🏆 Best Practices
 
+### Module Design
 - **Keep interfaces minimal**: Only expose what other modules need
 - **Avoid circular dependencies**: Design modules with clear hierarchy
 - **Use dependency injection**: Pass dependencies through initializers
 - **Follow naming conventions**: Use clear, descriptive names for modules
 - **Document public APIs**: Add documentation to interface protocols
+
+### Testing Strategy
+- **Test each module independently**: Keep tests isolated to their respective modules
+- **Test public interfaces**: Focus on testing the contracts between modules
+- **Use dependency injection for testing**: Make dependencies mockable through protocols
+- **Include performance tests**: Measure critical paths and prevent regressions
+- **Test both success and failure scenarios**: Ensure robust error handling
+
+### Project Organization
+- **Consistent module structure**: Follow the Interface/Implementation pattern
+- **Clear dependency hierarchy**: Interfaces depend only on other interfaces
+- **Meaningful commit messages**: Reference the affected modules
+- **Regular dependency updates**: Keep external dependencies current
 
 ---
 
