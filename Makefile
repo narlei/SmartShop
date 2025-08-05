@@ -40,7 +40,7 @@ build: generate ## Generate and build project
 
 test: generate ## Generate and run tests
 	@echo "🧪 Running tests with Tuist..."
-	@tuist test --device "iPhone 16 Pro" --os 18.5
+	@tuist test --device "iPhone 16 Pro" --os 18.2
 
 # Cleanup commands
 clean-all: clean ## Clean everything (cache + generated files)
