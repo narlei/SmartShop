@@ -1,10 +1,10 @@
-name: iOS Makefile CI
+name: iOS CI
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
   pull_request:
-    branches: ["main"]
+    branches: [ "main" ]
 
 jobs:
   build-and-test:
@@ -13,17 +13,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Cache DerivedData
+      - name: Cache Tuist (including SelectiveTests)
         uses: actions/cache@v3
         with:
           path: |
-            ~/Library/Developer/Xcode/DerivedData
             ~/.cache/tuist
             ~/.cache/tuist/SelectiveTests
+          key: ${{ runner.os }}-tuist-${{ hashFiles('**/Project.swift') }}
+
+      - name: Cache DerivedData
+        uses: actions/cache@v3
+        with:
+          path: ~/Library/Developer/Xcode/DerivedData
           key: ${{ runner.os }}-deriveddata-${{ hashFiles('**/Project.swift') }}
 
       - name: Install Tuist
         run: make install
+
+      - name: Generate Xcode project
+        run: make generate
+
+      - name: Build App
+        run: make build
 
       - name: Run Tests
         run: make test
