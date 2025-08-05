@@ -21,9 +21,9 @@ jobs:
             ~/.cache/tuist/SelectiveTests
             ~/Library/Caches/tuist
             ~/Library/Caches/tuist/SelectiveTests
-          key: ${{ runner.os }}-tuist
+          key: ${{ runner.os }}-tuist-${{ hashFiles('**/Project.swift', '**/Modules/**/Tests/Sources/**/*.swift') }}
           restore-keys: |
-            ${{ runner.os }}-tuist
+            ${{ runner.os }}-tuist-
 
       - name: Cache DerivedData
         uses: actions/cache@v3
