@@ -9,6 +9,7 @@ on:
 jobs:
   build-and-test:
     runs-on: macos-latest
+    environment: development
     env:
       CI: "1"
       TUIST_CONFIG_TOKEN: ${{ secrets.TUIST_TOKEN }}
