@@ -10,6 +10,7 @@ jobs:
   build-and-test:
     runs-on: macos-latest
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -31,8 +32,6 @@ jobs:
           path: ~/Library/Developer/Xcode/DerivedData
           key: ${{ runner.os }}-deriveddata-${{ hashFiles('**/Project.swift') }}
 
-      - name: Install Tuist
-        run: make install
-
       - name: Run Tests
+        uses: jdx/mise-action@v2
         run: make test
