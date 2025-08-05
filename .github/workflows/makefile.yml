@@ -9,6 +9,9 @@ on:
 jobs:
   build-and-test:
     runs-on: macos-latest
+    env:
+      CI: "1"
+      TUIST_CONFIG_TOKEN: ${{ secrets.TUIST_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
