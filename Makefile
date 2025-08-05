@@ -11,9 +11,9 @@ help: ## Show this help
 
 install: ## Install Tuist
 	@echo "🚀 Installing Tuist..."
-	@if ! command -v tuist &> /dev/null; then \
-		curl -Ls https://install.tuist.io | bash; \
-		source ~/.zshrc; \
+	@if ! command -v tuist &>/dev/null; then \
+		echo "⏳ Installing Tuist via Homebrew..."; \
+		brew tap tuist/tuist && brew install tuist; \
 	else \
 		echo "✅ Tuist is already installed"; \
 	fi
