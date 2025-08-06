@@ -370,3 +370,4 @@ This project is integrated with GitHub Actions. On every push or pull request to
 ---
 
 This architecture demonstrates how **Tuist** and **modular design** can create a scalable, maintainable iOS application that grows with your team and requirements.
+
