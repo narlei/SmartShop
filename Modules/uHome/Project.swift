@@ -5,21 +5,19 @@ let project = Project(
     name: Feature.Home.rawValue,
     targets: [
         .feature(
-            interface: .Home,
-            dependencies: [
-            ]
+            interface: .Home
         ),
         .feature(
             implementation: .Home,
             dependencies: [
-                .feature(interface: .Networking),
-                .feature(interface: .Home)
+                .interface(.Networking),
+                .interface(.Home)
             ]
         ),
         .test(
             implementation: .Home,
             dependencies: [
-                .feature(interface: .Home)
+                .interface(.Home)
             ]
         )
     ]

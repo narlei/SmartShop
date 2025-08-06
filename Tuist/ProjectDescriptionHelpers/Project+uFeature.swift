@@ -5,19 +5,13 @@ public extension ProjectDescription.TargetDependency {
         .project(target: target, path: .relativeToRoot("Modules/u" + featureName))
     }
 
-    private static func feature(interface moduleName: String) -> ProjectDescription.TargetDependency {
-        .feature(target: moduleName + "Interface", featureName: moduleName)
+    // MARK: - Taxonomy
+
+    static func interface(_ moduleName: Feature) -> ProjectDescription.TargetDependency {
+        .feature(target: moduleName.rawValue + "Interface", featureName: moduleName.rawValue)
     }
 
-    private static func feature(implementation moduleName: String) -> ProjectDescription.TargetDependency {
-        .feature(target: moduleName, featureName: moduleName)
-    }
-
-    static func feature(interface moduleName: Feature) -> ProjectDescription.TargetDependency {
-        .feature(interface: moduleName.rawValue)
-    }
-
-    static func feature(implementation moduleName: Feature) -> ProjectDescription.TargetDependency {
-        .feature(implementation: moduleName.rawValue)
+    static func implementation(_ moduleName: Feature) -> ProjectDescription.TargetDependency {
+        .feature(target: moduleName.rawValue, featureName: moduleName.rawValue)
     }
 }

@@ -10,9 +10,10 @@ let project = Project(
                 "Core/**"
             ],
             dependencies: [
-                .feature(implementation: .Home),
-                .feature(interface: .Home),
-                .feature(interface: .Networking)
+                .interface(.Home),
+                .implementation(.Home),
+                .interface(.Networking),
+                .implementation(.Networking)
             ]
         )
     ]

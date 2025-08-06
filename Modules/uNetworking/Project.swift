@@ -5,14 +5,12 @@ let project = Project(
     name: Feature.Networking.rawValue,
     targets: [
         .feature(
-            interface: .Networking,
-            dependencies: [
-            ]
+            interface: .Networking
         ),
         .feature(
             implementation: .Networking,
             dependencies: [
-                .feature(interface: .Networking),
+                .interface(.Networking)
             ]
         )
     ]

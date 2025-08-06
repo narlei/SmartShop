@@ -77,12 +77,6 @@ uFeatureName/
 public protocol HomeViewControllerProtocol: AnyObject {
     func presentHome()
 }
-
-public struct TaskItem {
-    public let id: String
-    public var title: String
-    public var isCompleted: Bool
-}
 ```
 
 #### **Implementation** (`Feature`)
@@ -104,7 +98,7 @@ public final class HomeViewController: UIViewController, HomeViewControllerProto
 
 Each uFeature has its own `Project.swift` file that:
 
-1. **Defines the module structure** (Interface + Implementation)
+1. **Defines the module structure** (Interface + Implementation + Tests)
 2. **Declares dependencies** on other modules
 3. **Configures build settings** specific to that module
 
@@ -119,24 +113,21 @@ let project = Project(
     targets: [
         // Interface target (public API)
         .feature(
-            interface: .Home,
-            dependencies: [
-                // Interface can depend on other interfaces only
-            ]
+            interface: .Home
         ),
         // Implementation target (concrete implementation)
         .feature(
             implementation: .Home,
             dependencies: [
-                .feature(interface: .Network),    // Import other interfaces
-                .feature(interface: .Home),       // Import own interface
+                .interface(.Network),    // Import other interfaces
+                .interface(.Home),       // Import own interface
             ]
         ),
         // Test target (unit tests)
         .test(
             implementation: .Home,
             dependencies: [
-                .feature(interface: .Home)        // Test can access interfaces
+                .interface(.Home)        // Test can access interfaces
             ]
         )
     ]
@@ -156,8 +147,8 @@ let project = Project(
             name: "SmartShop",
             sources: ["Core/**"],
             dependencies: [
-                .feature(implementation: .Home),    // Use concrete implementations
-                .feature(interface: .Home)          // Access public interfaces
+                .implementation(.Home),    // Use concrete implementations
+                .interface(.Home)          // Access public interfaces
             ]
         )
     ]
@@ -194,6 +185,7 @@ Network Interface
 - **Unit Testing**: Each module can be tested independently
 - **Mocking**: Easy to mock dependencies through interfaces
 - **Integration Testing**: Test module interactions through well-defined interfaces
+- **Caching**: Tuist can cache the tests with selective tests
 
 ### For Build Performance:
 - **Parallel Compilation**: Modules compile independently
@@ -238,8 +230,8 @@ To add a new uFeature module:
 1. **Create the module structure**:
    ```
    Modules/uNewFeature/
-   ├── Interface/
-   ├── Implementation/
+   ├── Interface/Sources/
+   ├── Implementation/Sources/
    └── Project.swift
    ```
 
@@ -248,15 +240,26 @@ To add a new uFeature module:
    let project = Project(
        name: Feature.NewFeature.rawValue,
        targets: [
-           .feature(interface: .NewFeature, dependencies: []),
-           .feature(implementation: .NewFeature, dependencies: [
-               .feature(interface: .NewFeature)
-           ])
+           .feature(interface: .NewFeature),
+           .feature(implementation: .NewFeature, 
+               dependencies: [
+                  .interface(.NewFeature)
+               ]
+           )
        ]
    )
    ```
 
 3. **Add to Feature enum** in `ProjectDescriptionHelpers`
+
+```
+public enum Feature: String {
+    case Home
+    case Networking
+    case App
+}
+```
+
 
 4. **Import in dependent modules** as needed
 
@@ -272,23 +275,18 @@ To add tests to a uFeature module, include a test target in the `Project.swift`:
 let project = Project(
     name: Feature.Home.rawValue,
     targets: [
-        // Interface target
-        .feature(
-            interface: .Home,
-            dependencies: []
-        ),
         // Implementation target
         .feature(
             implementation: .Home,
             dependencies: [
-                .feature(interface: .Home)
+                .interface(.Home)
             ]
         ),
         // Test target
         .test(
             implementation: .Home,
             dependencies: [
-                .feature(interface: .Home)
+                .interface(.Home)
             ]
         )
     ]
@@ -309,60 +307,6 @@ uFeatureName/
 │           └── FeatureTests.swift
 └── Project.swift
 ```
-
-### Running Tests
-
-```bash
-# Run all tests
-make test
-
-# Build and test manually
-xcodebuild -workspace SmartShop.xcworkspace -scheme Home -destination 'platform=iOS Simulator,name=iPhone 15' test
-```
-
-### Test Types Supported
-
-- **Unit Tests**: Test individual components and business logic
-- **Integration Tests**: Test module interactions
-- **Performance Tests**: Measure performance of critical paths
-
-### Example Test Implementation
-
-```swift
-import XCTest
-@testable import Home
-@testable import HomeInterface
-
-final class HomeModuleTests: XCTestCase {
-    
-    func testTaskItemInitialization() {
-        // Given
-        let title = "Test Task"
-        
-        // When
-        let task = TaskItem(title: title)
-        
-        // Then
-        XCTAssertEqual(task.title, title)
-        XCTAssertFalse(task.isCompleted)
-    }
-    
-    func testHomeFactoryCreatesViewController() {
-        // When
-        let viewController = HomeFactory.makeHomeViewController()
-        
-        // Then
-        XCTAssertNotNil(viewController)
-        XCTAssertTrue(viewController is HomeViewControllerProtocol)
-    }
-}
-```
-
-### Test Dependencies
-
-- Tests can depend on both **Interface** and **Implementation** targets
-- Use `@testable import` to access internal implementation details
-- Keep test dependencies minimal to maintain module isolation
 
 ## Makefile Automation
 

@@ -1,5 +1,6 @@
 import UIKit
 import Home
+import HomeInterface
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
