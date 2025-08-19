@@ -9,23 +9,25 @@ help: ## Show this help
 	@echo "Available commands:"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-install: ## Install Tuist
-	@echo "🚀 Installing Tuist..."
-	@if ! command -v tuist &>/dev/null; then \
-		echo "⏳ Installing Tuist $(TUIST_VERSION)..."; \
-		curl -Ls https://install.tuist.io | bash -s $(TUIST_VERSION); \
-		echo 'export PATH="$$HOME/.local/bin:$$PATH"' >> ~/.zshrc; \
-		export PATH="$$HOME/.local/bin:$$PATH"; \
-	else \
-		CURRENT_VERSION=$$(tuist version 2>/dev/null | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' || echo "unknown"); \
-		if [ "$$CURRENT_VERSION" != "$(TUIST_VERSION)" ]; then \
-			echo "⚠️  Current version: $$CURRENT_VERSION, expected: $(TUIST_VERSION)"; \
-			echo "⏳ Installing Tuist $(TUIST_VERSION)..."; \
-			curl -Ls https://install.tuist.io | bash -s $(TUIST_VERSION); \
-		else \
-			echo "✅ Tuist $(TUIST_VERSION) is already installed"; \
-		fi \
+install: ## Install Tuist via mise (pinned version)
+	@echo "🚀 Ensuring mise and Tuist $(TUIST_VERSION) are installed..."
+	@if ! command -v mise >/dev/null 2>&1; then \
+		echo "⏳ Installing mise..."; \
+		curl -fsSL https://mise.run | sh; \
 	fi
+	@echo "🔧 Installing Tuist $(TUIST_VERSION) with mise..."
+	@mise plugins update >/dev/null 2>&1 || true
+	@mise install tuist@$(TUIST_VERSION)
+	@mise use -g tuist@$(TUIST_VERSION)
+	@if ! grep -q 'eval "$$\(mise activate zsh\)"' $$HOME/.zshrc 2>/dev/null; then \
+		[ -f $$HOME/.zshrc ] || touch $$HOME/.zshrc; \
+		printf '\n# mise activation\n' >> $$HOME/.zshrc; \
+		printf 'eval "$$(mise activate zsh)"\n' >> $$HOME/.zshrc; \
+		echo "⚡ Added mise activation to ~/.zshrc"; \
+	else \
+		echo "✅ mise activation already in ~/.zshrc"; \
+	fi
+	@echo "✅ Tuist $(TUIST_VERSION) ready (globally available after restarting shell)"
 
 clean: ## Clean Tuist cache
 	@echo "🧹 Cleaning Tuist cache..."
