@@ -2,7 +2,7 @@
 
 # Variables
 PROJECT_NAME = SmartShop
-TUIST_VERSION = 4.55.6
+TUIST_VERSION = 4.63.3
 
 # Main commands
 help: ## Show this help
@@ -12,10 +12,19 @@ help: ## Show this help
 install: ## Install Tuist
 	@echo "🚀 Installing Tuist..."
 	@if ! command -v tuist &>/dev/null; then \
-		echo "⏳ Installing Tuist via Homebrew..."; \
-		brew tap tuist/tuist && brew install tuist; \
+		echo "⏳ Installing Tuist $(TUIST_VERSION)..."; \
+		curl -Ls https://install.tuist.io | bash -s $(TUIST_VERSION); \
+		echo 'export PATH="$$HOME/.local/bin:$$PATH"' >> ~/.zshrc; \
+		export PATH="$$HOME/.local/bin:$$PATH"; \
 	else \
-		echo "✅ Tuist is already installed"; \
+		CURRENT_VERSION=$$(tuist version 2>/dev/null | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' || echo "unknown"); \
+		if [ "$$CURRENT_VERSION" != "$(TUIST_VERSION)" ]; then \
+			echo "⚠️  Current version: $$CURRENT_VERSION, expected: $(TUIST_VERSION)"; \
+			echo "⏳ Installing Tuist $(TUIST_VERSION)..."; \
+			curl -Ls https://install.tuist.io | bash -s $(TUIST_VERSION); \
+		else \
+			echo "✅ Tuist $(TUIST_VERSION) is already installed"; \
+		fi \
 	fi
 
 clean: ## Clean Tuist cache
