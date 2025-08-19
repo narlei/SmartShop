@@ -20,9 +20,8 @@ jobs:
       - name: Install Tuist
         run: make install
 
-      - name: Activate mise
-        run: eval "$($HOME/.local/bin/mise activate bash)"
-
       - name: Run Tests
-        run: make test
-
+        shell: bash
+        run: |
+          eval "$($HOME/.local/bin/mise activate bash)"
+          make test
