@@ -10,7 +10,7 @@ private func makeBundleID(with addition: String) -> String {
 public extension Target {
     static func makeApp(
         name: String,
-        sources: SourceFilesList,
+        sources: [BuildableFolder],
         dependencies: [TargetDependency]
     ) -> Target {
         Target.target(
@@ -20,14 +20,14 @@ public extension Target {
             bundleId: makeBundleID(with: "app"),
             deploymentTargets: .iOS("16.0"),
             infoPlist: .extendingDefault(with: infoPlistExtension),
-            sources: sources,
+            buildableFolders: sources,
             dependencies: dependencies
         )
     }
 
     static func makeFramework(
         name: String,
-        sources: SourceFilesList,
+        sources: [BuildableFolder],
         dependencies: [TargetDependency] = [],
         resources: ResourceFileElements? = []
     ) -> Target {
@@ -37,8 +37,8 @@ public extension Target {
             product: defaultPackageType,
             bundleId: makeBundleID(with: name + ".framework"),
             deploymentTargets: .iOS("16.0"),
-            sources: sources,
             resources: resources,
+            buildableFolders: sources,
             dependencies: dependencies
         )
     }
@@ -50,7 +50,7 @@ public extension Target {
     ) -> Target {
         makeFramework(
             name: featureName,
-            sources: ["Implementation/Sources/**"],
+            sources: ["Implementation/Sources/"],
             dependencies: dependencies,
             resources: resources
         )
@@ -63,7 +63,7 @@ public extension Target {
     ) -> Target {
         makeFramework(
             name: featureName + "Interface",
-            sources: ["Interface/Sources/**"],
+            sources: ["Interface/Sources/"],
             dependencies: dependencies,
             resources: resources
         )

@@ -7,7 +7,7 @@ let project = Project(
         .makeApp(
             name: "SmartShop",
             sources: [
-                "Core/**"
+                "Core"
             ],
             dependencies: [
                 .interface(.Home),
