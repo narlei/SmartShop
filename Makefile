@@ -2,7 +2,7 @@
 
 # Variables
 PROJECT_NAME = SmartShop
-TUIST_VERSION = 4.63.3
+TUIST_VERSION = 4.73.0
 
 # Main commands
 help: ## Show this help
@@ -19,7 +19,7 @@ install: ## Install Tuist via mise (pinned version)
 	@mise plugins update >/dev/null 2>&1 || true
 	@mise install tuist@$(TUIST_VERSION)
 	@mise use -g tuist@$(TUIST_VERSION)
-	@if ! grep -q 'eval "$$\(mise activate zsh\)"' $$HOME/.zshrc 2>/dev/null; then \
+	@if ! grep -q 'mise activate zsh' $$HOME/.zshrc 2>/dev/null; then \
 		[ -f $$HOME/.zshrc ] || touch $$HOME/.zshrc; \
 		printf '\n# mise activation\n' >> $$HOME/.zshrc; \
 		printf 'eval "$$(mise activate zsh)"\n' >> $$HOME/.zshrc; \
