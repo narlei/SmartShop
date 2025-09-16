@@ -4,6 +4,8 @@ A modular iOS application demonstrating clean architecture principles using **Tu
 
 If you like this approach and plan to use it in your project, feel free to reach out: [LinkedIn](https://www.linkedin.com/in/narlei/)
 
+**Important: Works with Xcode 26!**
+
 ## 🔨 Quick Start
 
 ```bash
